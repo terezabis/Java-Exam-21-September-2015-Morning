@@ -1,0 +1,23 @@
+import java.text.DecimalFormat;
+import java.util.Scanner;
+
+public class Timespan {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        String[] startTime = input.nextLine().split(":");
+        String[] endTime = input.nextLine().split(":");
+        long stHour = Long.parseLong(startTime[0])*60*60;
+        int stMinute = Integer.parseInt(startTime[1])*60;
+        int stSecond = Integer.parseInt(startTime[2]);
+        long enHour = Long.parseLong(endTime[0])*60*60;
+        int enMinute = Integer.parseInt(endTime[1])*60;
+        int enSecond = Integer.parseInt(endTime[2]);
+        long startSeconds = stHour + stMinute + stSecond;
+        long endSeconds = enHour + enMinute + enSecond;
+        long resultSeconds = startSeconds - endSeconds;
+        long hours = resultSeconds / (60*60);
+        long minutes = (resultSeconds % (60*60)) / 60;
+        long seconds = (resultSeconds % (60*60)) % 60;
+        System.out.printf("%d:%02d:%02d", hours, minutes, seconds);
+    }
+}
