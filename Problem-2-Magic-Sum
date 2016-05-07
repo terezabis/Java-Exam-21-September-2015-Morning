@@ -1,0 +1,36 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class MagicSum {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        int devider = Integer.parseInt(input.nextLine());
+        String num = "";
+        ArrayList<Integer> numbers = new ArrayList<>();
+
+        while (!"End".equals(num = input.nextLine())) {
+            numbers.add(Integer.parseInt(num));
+        }
+
+        long maxSum = 0;
+        long sum = 0;
+        String output = "";
+
+        for (int i = 0; i < numbers.size(); i++) {
+            for (int j = i + 1; j < numbers.size(); j++) {
+                for (int k = j + 1; k < numbers.size(); k++) {
+                    sum = numbers.get(i) + numbers.get(j) + numbers.get(k);
+                    if (sum % devider == 0 && sum > maxSum) {
+                        maxSum = sum;
+                        output = String.format("(%d + %d + %d) %% %d = 0", numbers.get(i), numbers.get(j), numbers.get(k), devider);
+                    }
+                }
+            }
+        }
+        if (maxSum == 0) {
+            System.out.println("No");
+        } else {
+            System.out.println(output);
+        }
+    }
+}
