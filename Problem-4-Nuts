@@ -1,0 +1,44 @@
+import java.util.*;
+
+public class Nuts {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        int number = Integer.parseInt(input.nextLine());
+        //      company                 nuts             kg
+        TreeMap<String, LinkedHashMap<String, ArrayList<Integer>>> database = new TreeMap<>();
+
+        for (int i = 0; i < number; i++) {
+            String[] line = input.nextLine().split(" ");
+            database.putIfAbsent(line[0], new LinkedHashMap<>());
+            database.get(line[0]).putIfAbsent(line[1], new ArrayList<>());
+            line[2] = line[2].replace("kg", "");
+            //String kilo = line[2].substring(0, line[2].length()-2);
+            database.get(line[0]).get(line[1]).add(Integer.parseInt(line[2]));
+        }
+
+        long sum = 0;
+        TreeMap<String, LinkedHashMap<String, Long>> newBase = new TreeMap<>();
+
+        for (Map.Entry<String, LinkedHashMap<String, ArrayList<Integer>>> company : database.entrySet()){
+            newBase.put(company.getKey(), new LinkedHashMap<>());
+            for (Map.Entry<String, ArrayList<Integer>> nut : company.getValue().entrySet()){
+                newBase.get(company.getKey()).putIfAbsent(nut.getKey(), sum);
+                for (int kg : nut.getValue()){
+                    sum += kg;
+                    newBase.get(company.getKey()).put(nut.getKey(), sum);
+                }
+                sum = 0;
+            }
+        }
+
+        newBase.entrySet().stream().forEach(company -> {
+            System.out.print(company.getKey() + ": ");
+            StringJoiner j=new StringJoiner(", ").setEmptyValue("nothing");
+            company.getValue().entrySet().stream().forEach(nut -> {
+                j.add(nut.getKey() + "-" + nut.getValue() + "kg");
+            });
+            System.out.print(j);
+            System.out.println();
+        });
+    }
+}
